@@ -1,5 +1,6 @@
 import React from 'react';
-import ListItem from './listItem';
+import ListRow from './ListRow';
+import Input from './Input';
 
 export default class extends React.Component {
   constructor(props) {
@@ -9,15 +10,13 @@ export default class extends React.Component {
       input: '',
       tasks: [],
     };
-    // this.onChange = this.onChange.bind(this);
-    // this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onChange = e => {
+  setInput = e => {
     this.setState({ input: e.target.value });
   };
 
-  onSubmit = e => {
+  addTask = e => {
     e.preventDefault();
     this.setState({
       input: '',
@@ -27,28 +26,44 @@ export default class extends React.Component {
   };
 
   deleteTask = e => {
-    const taskToDelete = e.target.parentNode.getAttribute('value');
+    e.preventDefault();
+    const indexOfTaskToDelete = e.target.parentNode.parentNode.getAttribute(
+      'value',
+    );
     this.setState({
-      tasks: this.state.tasks.filter(task => task !== taskToDelete),
+      tasks: this.state.tasks.filter(
+        (task, index) => index != indexOfTaskToDelete,
+      ),
     });
+  };
+
+  saveEditedTask = e => {
+    e.preventDefault();
+    const indexOfTaskToEdit = e.target.parentNode.parentNode.getAttribute(
+      'value',
+    );
+    const newTask = document.getElementById(indexOfTaskToEdit).value;
+    const newTasks = this.state.tasks;
+    newTasks[indexOfTaskToEdit] = newTask;
+    this.setState({ tasks: newTasks });
   };
 
   render() {
     return (
       <div id="todoList">
-        <form onSubmit={this.onSubmit}>
-          <input
-            type="text"
-            name="task"
-            id="task"
-            placeholder="Enter task"
-            onChange={this.onChange}
-          />
-          <button type="submit" id="submit">
-            Add
-          </button>
-        </form>
-        <ListItem tasks={this.state.tasks} deleteTask={this.deleteTask} />
+        <Input setInput={this.setInput} addTask={this.addTask} />
+        <table>
+          <tbody>
+            {this.state.tasks.map((task, ind) => (
+              <ListRow
+                task={task}
+                deleteTask={this.deleteTask}
+                saveEditedTask={this.saveEditedTask}
+                index={ind}
+              />
+            ))}
+          </tbody>
+        </table>
       </div>
     );
   }

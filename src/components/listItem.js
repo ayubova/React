@@ -1,12 +1,13 @@
 import React from 'react';
 
-export default ({ tasks, deleteTask }) => (
-  <ul>
-    {tasks.map((task, ind) => (
-      <li value={task} key={ind}>
-        {task}
-        <button onClick={deleteTask}>Delete</button>
-      </li>
-    ))}
-  </ul>
-);
+export default ({ isEditing, task, index }) =>
+  // если в режиме редактирования, то делаем инпут, если нет - то ячейку таблицы со значением из списка задач
+  isEditing ? (
+    <td>
+      <form>
+        <input type="text" defaultValue={task} id={index} />
+      </form>
+    </td>
+  ) : (
+    <td>{task}</td>
+  );

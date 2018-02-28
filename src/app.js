@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Todo from './components/todo';
+import Todo from './components/Todo';
 
 class App extends React.Component {
   render() {
