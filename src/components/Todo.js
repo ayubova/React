@@ -82,12 +82,11 @@ export default class Todo extends React.Component {
               .filter(task => task.isFiltered)
               .map((task, index) => (
                 <ListRow
-                  key={`id${task.name}`}
+                  key={this.getUniqueKey()}
                   task={task.name}
                   deleteTask={this.deleteTask}
                   saveEditedTask={this.saveEditedTask}
                   index={index}
-                  getUniqueKey={this.getUniqueKey}
                   priority={task.priority}
                 />
               ))}
