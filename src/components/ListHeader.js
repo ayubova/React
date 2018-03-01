@@ -9,7 +9,7 @@ export default class ListHeader extends React.Component {
     return (
       <thead>
         <tr>
-          <th>Приоритет</th>  
+          <th>Приоритет</th>
           <th>Название</th>
           <th>
             <input

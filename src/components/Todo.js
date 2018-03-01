@@ -39,7 +39,7 @@ export default class Todo extends React.Component {
         {
           name: this.state.input,
           priority: this.state.selectedPriority,
-          isFiltered: false,
+          isFiltered: true,
         },
       ],
     });
@@ -58,13 +58,14 @@ export default class Todo extends React.Component {
     this.setState({ tasks: newTasks });
   };
 
-  // handleFilter = e => {
-  //   const request = e.target.value.toLowerCase();
-  //   const filteredTasks = this.state.tasks.filter(task =>
-  //     task.toLowerCase().includes(request),
-  //   );
-  //   this.setState({ filteredTasks });
-  // };
+  handleFilter = e => {
+    const query = e.target.value.toLowerCase();
+    const newTasks = this.state.tasks.map(task => ({
+      ...task,
+      isFiltered: task.name.toLowerCase().includes(query),
+    }));
+    this.setState({ tasks: newTasks });
+  };
 
   render() {
     return (
@@ -77,17 +78,19 @@ export default class Todo extends React.Component {
         <table>
           <ListHeader handleFilter={this.handleFilter} />
           <tbody>
-            {this.state.tasks.map((task, index) => (
-              <ListRow
-                key={`id${task.name}`}
-                task={task.name}
-                deleteTask={this.deleteTask}
-                saveEditedTask={this.saveEditedTask}
-                index={index}
-                getUniqueKey={this.getUniqueKey}
-                priority={task.priority}
-              />
-            ))}
+            {this.state.tasks
+              .filter(task => task.isFiltered)
+              .map((task, index) => (
+                <ListRow
+                  key={`id${task.name}`}
+                  task={task.name}
+                  deleteTask={this.deleteTask}
+                  saveEditedTask={this.saveEditedTask}
+                  index={index}
+                  getUniqueKey={this.getUniqueKey}
+                  priority={task.priority}
+                />
+              ))}
           </tbody>
         </table>
       </div>
