@@ -8,14 +8,14 @@ export default function Button({
   index,
   name,
 }) {
-  if (name === 'Deleted') {
+  if (name === 'Delete') {
     return (
       <td>
         <button onClick={deleteTask}>Delete</button>
       </td>
     );
   }
-  if (name === 'Editing') {
+  if (name === 'Edit') {
     return isEditing ? (
       <td>
         <button

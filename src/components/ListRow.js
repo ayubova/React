@@ -21,6 +21,7 @@ export default class ListRow extends React.Component {
     // формируем строку списка (компоненты: ячейка с задачей и кнопки)
     return (
       <tr>
+        <td>{this.props.priority}</td>
         <ListItem
           task={this.state.task}
           isEditing={this.state.isEditing}

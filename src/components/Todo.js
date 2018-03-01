@@ -1,12 +1,14 @@
 import React from 'react';
 import ListRow from './ListRow';
+import ListHeader from './ListHeader';
 import Input from './Input';
 
-export default class Todo   extends React.Component {
+export default class Todo extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      selectedPriority: 'Высокий',
       input: '',
       tasks: [],
     };
@@ -15,6 +17,12 @@ export default class Todo   extends React.Component {
 
   setInput = e => {
     this.setState({ input: e.target.value });
+  };
+
+  setPriority = e => {
+    this.setState({
+      selectedPriority: e.target.options[e.target.selectedIndex].textContent,
+    });
   };
 
   getUniqueKey = () => {
@@ -26,7 +34,14 @@ export default class Todo   extends React.Component {
   addTask = e => {
     this.setState({
       input: '',
-      tasks: [...this.state.tasks, this.state.input],
+      tasks: [
+        ...this.state.tasks,
+        {
+          name: this.state.input,
+          priority: this.state.selectedPriority,
+          isFiltered: false,
+        },
+      ],
     });
     document.getElementById('task').value = '';
   };
@@ -43,20 +58,34 @@ export default class Todo   extends React.Component {
     this.setState({ tasks: newTasks });
   };
 
+  // handleFilter = e => {
+  //   const request = e.target.value.toLowerCase();
+  //   const filteredTasks = this.state.tasks.filter(task =>
+  //     task.toLowerCase().includes(request),
+  //   );
+  //   this.setState({ filteredTasks });
+  // };
+
   render() {
     return (
       <div>
-        <Input setInput={this.setInput} addTask={this.addTask} />
+        <Input
+          setInput={this.setInput}
+          addTask={this.addTask}
+          setPriority={this.setPriority}
+        />
         <table>
+          <ListHeader handleFilter={this.handleFilter} />
           <tbody>
             {this.state.tasks.map((task, index) => (
               <ListRow
-                key={`id${task}`}
-                task={task}
+                key={`id${task.name}`}
+                task={task.name}
                 deleteTask={this.deleteTask}
                 saveEditedTask={this.saveEditedTask}
                 index={index}
                 getUniqueKey={this.getUniqueKey}
+                priority={task.priority}
               />
             ))}
           </tbody>
@@ -65,69 +94,3 @@ export default class Todo   extends React.Component {
     );
   }
 }
-
-//import React from 'react';
-// import ListRow from './ListRow';
-// import Input from './Input';
-
-// export default class extends React.Component {
-//   constructor(props) {
-//     super(props);
-
-//     this.state = {
-//       input: '',
-//       tasks: [],
-//     };
-
-//   }
-
-//   setInput = e => {
-//     this.setState({ input: e.target.value });
-//   };
-
-//   addTask = e => {
-//     e.preventDefault();
-//     this.setState({
-//       input: '',
-//       tasks: [...this.state.tasks, this.state.input],
-//     });
-//     document.getElementById('task').value = '';
-//   };
-
-//   deleteTask = indexToDelete => {
-//     this.setState({
-//       tasks: this.state.tasks.filter((task, index) => index != indexToDelete),
-//     });
-//   };
-
-//   saveEditedTask = (value, index) => {
-//     // e.preventDefault();
-//     // const indexOfTaskToEdit = e.target.parentNode.parentNode.getAttribute(
-//     //   'value',
-//     // );
-//     // const newTask = document.getElementById(indexOfTaskToEdit).value;
-//     const newTasks = this.state.tasks;
-//     newTasks[index] = value;
-//     this.setState({ tasks: newTasks });
-//   };
-
-//   render() {
-//     return (
-//       <div id="todoList">
-//         <Input setInput={this.setInput} addTask={this.addTask} />
-//         <table>
-//           <tbody>
-//             {this.state.tasks.map((task, index) => (
-//               <ListRow
-//                 task={task}
-//                 deleteTask={this.deleteTask}
-//                 saveEditedTask={this.saveEditedTask}
-//                 index={index}
-//               />
-//             ))}
-//           </tbody>
-//         </table>
-//       </div>
-//     );
-//   }
-// }
