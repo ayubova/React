@@ -1,14 +1,14 @@
 import React from 'react';
-import EditButton from './EditButton';
-import DeleteButton from './DeleteButton';
+import Button from './Button';
 import ListItem from './ListItem';
 
-export default class extends React.Component {
+export default class ListRow extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       isEditing: false, //режим редактирования по умолчанию устанавливаем false
+      task: this.props.task,
     };
   }
 
@@ -20,17 +20,23 @@ export default class extends React.Component {
   render() {
     // формируем строку списка (компоненты: ячейка с задачей и кнопки)
     return (
-      <tr value={this.props.index} key={this.props.index}>
+      <tr>
         <ListItem
-          task={this.props.task}
+          task={this.state.task}
           isEditing={this.state.isEditing}
           index={this.props.index}
         />
-        <DeleteButton deleteTask={this.props.deleteTask} />
-        <EditButton
+        <Button
+          deleteTask={() => this.props.deleteTask(this.props.index)}
+          name={'Delete'}
+        />
+        <Button
+          task={this.state.task}
+          index={this.props.index}
           saveEditedTask={this.props.saveEditedTask}
           setEditState={this.setEditState}
           isEditing={this.state.isEditing}
+          name={'Edit'}
         />
       </tr>
     );

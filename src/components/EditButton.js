@@ -1,11 +1,17 @@
 import React from 'react';
 
-export default ({ saveEditedTask, setEditState, isEditing }) =>
-  isEditing ? (
+export default function EditButton({
+  saveEditedTask,
+  setEditState,
+  isEditing,
+  index,
+}) {
+  return isEditing ? (
     <td>
       <button
+        type="button"
         onClick={e => {
-          saveEditedTask(e);
+          saveEditedTask(e, index);
           setEditState();
         }}
       >
@@ -14,6 +20,9 @@ export default ({ saveEditedTask, setEditState, isEditing }) =>
     </td>
   ) : (
     <td>
-      <button onClick={setEditState}>Edit</button>
+      <button type="button" onClick={setEditState}>
+        Edit
+      </button>
     </td>
   );
+}

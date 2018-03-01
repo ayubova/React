@@ -1,13 +1,12 @@
 import React from 'react';
 
-export default ({ isEditing, task, index }) =>
+export default function ListItem({ isEditing, task }) {
   // если в режиме редактирования, то делаем инпут, если нет - то ячейку таблицы со значением из списка задач
-  isEditing ? (
+  return isEditing ? (
     <td>
-      <form>
-        <input type="text" defaultValue={task} id={index} />
-      </form>
+      <input id="editInput" type="text" defaultValue={task} />
     </td>
   ) : (
     <td>{task}</td>
   );
+}
